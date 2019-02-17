@@ -134,12 +134,9 @@ class ObjectMapper(object):
         def not_excluded(s):
             return not (excluded and s in excluded)
 
-        from_obj_attributes = getmembers(from_obj, lambda a: not isroutine(a))
-        from_obj_dict = {k: v for k, v in from_obj_attributes
-                         if not_private(k) and not_excluded(k)}
+        from_obj_dict = {k: v for k, v in from_obj.__dict__.items() if not_private(k) and not_excluded(k)}
 
-        to_obj_attributes = getmembers(inst, lambda a: not isroutine(a))
-        to_obj_dict = {k: v for k, v in to_obj_attributes if not_private(k)}
+        to_obj_dict = {k: v for k, v in inst.__dict__.items() if not_private(k)}
 
         if ignore_case:
             from_props = CaseDict(from_obj_dict)
